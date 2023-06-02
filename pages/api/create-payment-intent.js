@@ -5,7 +5,7 @@ const calculateOrderAmount = (items) => {
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
-  return 1;
+  return 400;
 };
 
 export default async function handler(req, res) {
@@ -14,11 +14,17 @@ export default async function handler(req, res) {
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
-    currency: "cny",
+    currency: "HKD",
     automatic_payment_methods: {
       enabled: true,
     },
+
+    // Specify the payment method types here
+    // payment_method_types: [ "card", "alipay", "apple_pay", "link", "sofort"],
   });
+
+  
+
 
   res.send({
     clientSecret: paymentIntent.client_secret,
